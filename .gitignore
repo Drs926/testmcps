@@ -2,3 +2,12 @@
 .mcp-cache/
 node_modules/
 
+
+# MCP caches
+servers/**/.mcp-cache/
+
+
+# Node
+**/node_modules/
+**/dist/
+
