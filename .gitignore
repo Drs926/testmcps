@@ -11,3 +11,8 @@ servers/**/.mcp-cache/
 **/node_modules/
 **/dist/
 
+
+#mcp logs
+*.out.log
+*.err.log
+
