@@ -1,5 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { z } from "zod";
 import { searchMemory } from "./tools/search.js";
 import { listRecentMemory } from "./tools/listRecent.js";
 import { reindexTool } from "./tools/reindex.js";
@@ -16,14 +17,10 @@ server.registerTool(
   "memory.search",
   {
     description: "Search /memory using the local FTS index.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        query: { type: "string" },
-        limit: { type: "number" }
-      },
-      required: ["query"]
-    }
+    inputSchema: z.object({
+      query: z.string(),
+      limit: z.number().optional()
+    })
   },
   async (input) => {
     try {
@@ -43,12 +40,9 @@ server.registerTool(
   "memory.list_recent",
   {
     description: "List recently modified files in /memory with a short preview.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        limit: { type: "number" }
-      }
-    }
+    inputSchema: z.object({
+      limit: z.number().optional()
+    })
   },
   async (input) => {
     try {
@@ -68,7 +62,7 @@ server.registerTool(
   "memory.reindex",
   {
     description: "Rebuild the /memory index in .mcp-cache.",
-    inputSchema: { type: "object", properties: {} }
+    inputSchema: z.object({})
   },
   async () => {
     try {
@@ -88,7 +82,7 @@ server.registerTool(
   "memory.index_status",
   {
     description: "Return index status and counters.",
-    inputSchema: { type: "object", properties: {} }
+    inputSchema: z.object({})
   },
   async () => {
     try {
