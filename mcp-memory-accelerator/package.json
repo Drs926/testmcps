@@ -1,0 +1,16 @@
+{
+  "name": "mcp-memory-accelerator",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "node src/server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "better-sqlite3": "^11.5.0",
+    "fast-glob": "^3.3.2",
+    "zod": "^3.24.1"
+  }
+}
