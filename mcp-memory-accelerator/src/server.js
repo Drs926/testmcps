@@ -14,7 +14,7 @@ const server = new McpServer({
 const transport = new StdioServerTransport();
 
 server.registerTool(
-  "memory.search",
+  "memory_search",
   {
     description: "Search /memory using the local FTS index.",
     inputSchema: z.object({
@@ -37,7 +37,7 @@ server.registerTool(
 );
 
 server.registerTool(
-  "memory.list_recent",
+  "memory_list_recent",
   {
     description: "List recently modified files in /memory with a short preview.",
     inputSchema: z.object({
@@ -59,7 +59,7 @@ server.registerTool(
 );
 
 server.registerTool(
-  "memory.reindex",
+  "memory_reindex",
   {
     description: "Rebuild the /memory index in .mcp-cache.",
     inputSchema: z.object({})
@@ -79,7 +79,7 @@ server.registerTool(
 );
 
 server.registerTool(
-  "memory.index_status",
+  "memory_index_status",
   {
     description: "Return index status and counters.",
     inputSchema: z.object({})
