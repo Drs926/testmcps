@@ -6,6 +6,17 @@ import { listRecentMemory } from "./tools/listRecent.js";
 import { reindexTool } from "./tools/reindex.js";
 import { indexStatus } from "./tools/status.js";
 
+const LOG_LEVEL = process.env.LOG_LEVEL || "info";
+
+function log(level, payload) {
+  if (level === "debug" && LOG_LEVEL !== "debug") return;
+  console.log(JSON.stringify({
+    ts: new Date().toISOString(),
+    level,
+    ...payload
+  }));
+}
+
 const server = new McpServer({
   name: "mcp-memory-accelerator",
   version: "1.0.0"
@@ -25,8 +36,10 @@ server.registerTool(
   async (input) => {
     try {
       const result = searchMemory(input);
+      log("info", { tool: "memory_search", ok: true });
       return { content: [{ type: "text", text: JSON.stringify(result) }] };
     } catch (error) {
+      log("error", { tool: "memory_search", error: String(error) });
       return {
         content: [
           { type: "text", text: JSON.stringify({ ok: false, error: String(error) }) }
@@ -47,8 +60,10 @@ server.registerTool(
   async (input) => {
     try {
       const result = listRecentMemory(input);
+      log("info", { tool: "memory_list_recent", ok: true });
       return { content: [{ type: "text", text: JSON.stringify(result) }] };
     } catch (error) {
+      log("error", { tool: "memory_list_recent", error: String(error) });
       return {
         content: [
           { type: "text", text: JSON.stringify({ ok: false, error: String(error) }) }
@@ -67,8 +82,10 @@ server.registerTool(
   async () => {
     try {
       const result = reindexTool();
+      log("info", { tool: "memory_reindex", ok: true });
       return { content: [{ type: "text", text: JSON.stringify(result) }] };
     } catch (error) {
+      log("error", { tool: "memory_reindex", error: String(error) });
       return {
         content: [
           { type: "text", text: JSON.stringify({ ok: false, error: String(error) }) }
@@ -87,8 +104,10 @@ server.registerTool(
   async () => {
     try {
       const result = indexStatus();
+      log("info", { tool: "memory_index_status", ok: true });
       return { content: [{ type: "text", text: JSON.stringify(result) }] };
     } catch (error) {
+      log("error", { tool: "memory_index_status", error: String(error) });
       return {
         content: [
           { type: "text", text: JSON.stringify({ ok: false, error: String(error) }) }
