@@ -1,10 +1,10 @@
 # Status
 
 PROJECT: testmcps
-CURRENT_TASK: TMCPS-20260428-001
-STATE: READY_FOR_REVIEW
+CURRENT_TASK: TMCPS-20260428-002
+STATE: READY_FOR_AGENT
 OWNER: codex
 LAST_UPDATE: 2026-04-28
-LAST_ACTION: Repo structure audit completed in PROOF_ONLY mode.
-NEXT_ACTION: External review of RESULT.md and PROOF.md.
+LAST_ACTION: PROOF_ONLY clarification task synced for 3 pre-existing local code modifications.
+NEXT_ACTION: Run Codex or Claude locally after git pull.
 BLOCKER: none
