@@ -1,20 +1,18 @@
 # Proof
 
 BRANCH_CONFIRMED: review/mcp-memory-robustness-20260428
-COMMIT_CORRECTED_REFERENCED: ce188381920464947988d2af243a4f2b8787c8c3
-GIT_STATUS_BEFORE: clean working tree before documentation-only trace update
-GIT_DIFF_SERVER_EXPECTED: only `console.log` replaced by `console.error` in `mcp-memory-accelerator/src/server.js`
-GIT_DIFF_STAT: 5 files changed, 44 insertions(+), 58 deletions(-)
-GIT_DIFF_CACHED_NAME_ONLY:
+COMMIT_CODE_REFERENCED: ce188381920464947988d2af243a4f2b8787c8c3
+COMMIT_DOC_PREVIOUS_REFERENCED: 36d09f0b028fc6e96b1dc62aacc9af0605927425
+GIT_STATUS_BEFORE: clean working tree before documentation-only trace correction
+GIT_DIFF_SERVER_EXPECTED: only `console.log` replaced by `console.error` in `mcp-memory-accelerator/src/server.js` for the referenced code commit
+GIT_DIFF_CACHED_NAME_ONLY_FOR_DOC_COMMIT:
 - .codex/HANDOFF.md
 - .codex/PROOF.md
 - .codex/RESULT.md
 - .codex/STATUS.md
-- mcp-memory-accelerator/src/server.js
-GIT_DIFF_CACHED_STAT: .codex/HANDOFF.md | 10 +++----; .codex/PROOF.md | 30 ++++++++++----------; .codex/RESULT.md | 54 ++++++++++++++----------------------; .codex/STATUS.md | 6 ++--; mcp-memory-accelerator/src/server.js | 2 +-
-COMMIT_SHA: ce188381920464947988d2af243a4f2b8787c8c3
-PUSH_RESULT: pushed successfully to `review/mcp-memory-robustness-20260428`
-CODE_SCOPE_CONFIRMATION: only `mcp-memory-accelerator/src/server.js` was modified among code files for the referenced fix; this trace update modifies no code files
+GIT_DIFF_CACHED_STAT_FOR_DOC_COMMIT: .codex/HANDOFF.md | 8 ++++----; .codex/PROOF.md | 28 +++++++++++++++++++---------; .codex/RESULT.md | 30 ++++++++++++------------------; .codex/STATUS.md | 6 +++---
+PUSH_RESULT_PREVIOUS_DOC_COMMIT: pushed successfully to `review/mcp-memory-robustness-20260428`
+CODE_SCOPE_CONFIRMATION: no code file is modified in this documentation correction; the referenced code change remains isolated to `mcp-memory-accelerator/src/server.js`
 COMMANDS_RUN:
 - read `.codex/TASK.md`
 - read `AGENTS.md`
@@ -23,6 +21,6 @@ COMMANDS_RUN:
 - read `.codex/PROOF.md`
 - read `.codex/RESULT.md`
 - read `.codex/HANDOFF.md`
-- `git log --oneline -3`
+- `git log --oneline -5`
 - `git diff -- .codex/PROOF.md`
 PROOF_GAPS: none
