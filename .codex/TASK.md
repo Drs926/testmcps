@@ -1,91 +1,73 @@
 # Task
 
-TASK_ID: TMCPS-20260428-003
-MODE: REVIEW_ONLY
+TASK_ID: TMCPS-20260428-005
+MODE: CODE_ACTION
 TARGET_REPO: Drs926/testmcps
-TARGET_BRANCH: main
+TARGET_BRANCH: review/mcp-memory-robustness-20260428
 LOCAL_PATH: C:\Users\Harib\CascadeProjects\test mcps
 STATUS: READY_FOR_AGENT
 OWNER: codex
 
 ## OBJECTIVE
 
-Évaluer si les 3 modifications locales non commitées peuvent être conservées et proposées au commit, ou si elles doivent être ajustées/restaurées, sans modifier ni committer le code.
+Corriger uniquement le logging MCP incompatible avec le transport stdio dans `mcp-memory-accelerator/src/server.js`.
 
 ## CONTEXT
 
-Les tâches précédentes ont montré que 3 fichiers restent modifiés localement :
-
-- mcp-memory-accelerator/src/server.js
-- mcp-memory-accelerator/src/tools/reindex.js
-- mcp-memory-accelerator/src/tools/search.js
-
-La clarification TMCPS-20260428-002 indique que ces changements semblent cohérents avec un travail de robustesse : logging structuré, garde-fou anti-réindexation concurrente, validation de recherche et borne `limit`.
-
-Cette tâche sert à produire une recommandation de décision, pas à appliquer la décision.
+L'audit de la branche `review/mcp-memory-robustness-20260428` a bloqué le merge car `server.js` écrit les logs applicatifs avec `console.log`, donc sur stdout. Pour un serveur MCP en transport stdio, stdout doit rester réservé aux messages protocole. Les logs applicatifs doivent être envoyés sur stderr.
 
 ## SCOPE
 
-- Lire `AGENTS.md` et `.codex/TASK.md`.
-- Lire les diffs des 3 fichiers ciblés.
-- Vérifier les fichiers de configuration disponibles dans `mcp-memory-accelerator`.
-- Identifier les commandes de test ou de vérification disponibles sans installer de dépendance.
-- Lancer uniquement les commandes disponibles et non destructrices si elles existent déjà.
-- Produire une recommandation factuelle : conserver / ajuster / restaurer / committer plus tard.
-- Mettre à jour uniquement `.codex/STATUS.md`, `.codex/RESULT.md`, `.codex/PROOF.md` et `.codex/HANDOFF.md`.
+- Travailler uniquement sur la branche `review/mcp-memory-robustness-20260428`.
+- Modifier uniquement `mcp-memory-accelerator/src/server.js`.
+- Dans la fonction `log(level, payload)`, remplacer l'écriture stdout par stderr.
+- Conserver la forme JSON existante du log.
+- Committer uniquement cette correction.
+- Mettre à jour les fichiers `.codex/STATUS.md`, `.codex/RESULT.md`, `.codex/PROOF.md`, `.codex/HANDOFF.md` pour tracer l'exécution.
 
 ## OUT_OF_SCOPE
 
-- Ne pas modifier les 3 fichiers de code.
-- Ne pas restaurer les 3 fichiers de code.
-- Ne pas committer les 3 fichiers de code.
-- Ne pas installer de dépendance.
-- Ne pas créer de branche.
+- Ne pas modifier `mcp-memory-accelerator/src/tools/reindex.js`.
+- Ne pas modifier `mcp-memory-accelerator/src/tools/search.js`.
+- Ne pas modifier d'autre fichier de code.
+- Ne pas ajouter de dépendance.
+- Ne pas refactorer.
+- Ne pas merger dans `main`.
 - Ne pas ouvrir de PR.
 - Ne pas modifier le repo central `Drs926/agent-control-tower`.
 
 ## FILES_ALLOWED
 
+- mcp-memory-accelerator/src/server.js
 - .codex/STATUS.md
 - .codex/RESULT.md
 - .codex/PROOF.md
 - .codex/HANDOFF.md
 
-## FILES_READ_ALLOWED
-
-- AGENTS.md
-- .codex/TASK.md
-- mcp-memory-accelerator/package.json
-- mcp-memory-accelerator/src/server.js
-- mcp-memory-accelerator/src/tools/reindex.js
-- mcp-memory-accelerator/src/tools/search.js
-- tout fichier README ou configuration strictement nécessaire dans `mcp-memory-accelerator`
-
 ## FILES_FORBIDDEN
 
-- Toute modification hors `.codex/STATUS.md`, `.codex/RESULT.md`, `.codex/PROOF.md`, `.codex/HANDOFF.md`.
-- Tout fichier du repo central `Drs926/agent-control-tower`.
+- mcp-memory-accelerator/src/tools/reindex.js
+- mcp-memory-accelerator/src/tools/search.js
+- tout autre fichier non listé dans FILES_ALLOWED
+- tout fichier du repo central `Drs926/agent-control-tower`
 
 ## COMMANDS_ALLOWED
 
 - git status --short
+- git branch --show-current
 - git diff --stat
 - git diff -- mcp-memory-accelerator/src/server.js
-- git diff -- mcp-memory-accelerator/src/tools/reindex.js
-- git diff -- mcp-memory-accelerator/src/tools/search.js
-- git log --oneline -5
-- type AGENTS.md
-- type .codex\TASK.md
-- type mcp-memory-accelerator\package.json
-- npm test --prefix mcp-memory-accelerator
-- npm run test --prefix mcp-memory-accelerator
-- npm run lint --prefix mcp-memory-accelerator
+- git add mcp-memory-accelerator/src/server.js .codex/STATUS.md .codex/RESULT.md .codex/PROOF.md .codex/HANDOFF.md
+- git diff --cached --name-only
+- git diff --cached --stat
+- git commit -m "Fix MCP stdio logging output"
+- git push
 
-## COMMAND_RULES
+## EXPECTED_CHANGE
 
-- Ne lancer `npm test`, `npm run test` ou `npm run lint` que si le script existe dans `mcp-memory-accelerator/package.json`.
-- Ne pas exécuter `npm install`.
-- Ne pas exécuter de commande destructive.
+Dans `mcp-memory-accelerator/src/server.js` :
+
+- remplacer `console.log(...)` par `console.error(...)` dans la fonction `log(level, payload)`.
 
 ## EXPECTED_RESULT_FILE
 
@@ -95,13 +77,23 @@ Cette tâche sert à produire une recommandation de décision, pas à appliquer 
 
 .codex/PROOF.md
 
+## PROOFS_REQUIRED
+
+- branche courante confirmée : `review/mcp-memory-robustness-20260428`.
+- `git diff -- mcp-memory-accelerator/src/server.js` montrant uniquement `console.log` remplacé par `console.error`.
+- `git diff --cached --name-only` avant commit.
+- commit SHA produit.
+- push réussi.
+- confirmation qu'aucun autre fichier de code n'a été modifié.
+
 ## BLOCK_CONDITIONS
 
-- Les 3 fichiers ne sont plus modifiés localement.
-- Un test ou lint nécessite installation de dépendance.
-- Une commande disponible est destructive ou ambiguë.
-- La recommandation nécessiterait une modification de code immédiate.
+- La branche courante n'est pas `review/mcp-memory-robustness-20260428`.
+- La correction nécessite plus que `console.log` vers `console.error`.
+- Un fichier de code autre que `server.js` est modifié.
+- Le commit inclut autre chose que `server.js` et les fichiers `.codex` de trace.
+- Le push échoue.
 
 ## NEXT_ACTION
 
-Faire `git pull`, puis lancer Codex ou Claude avec : `Lis .codex/TASK.md et exécute strictement.`
+Faire `git pull`, rester sur la branche `review/mcp-memory-robustness-20260428`, puis lancer Codex ou Claude avec : `Lis .codex/TASK.md et exécute strictement.`
