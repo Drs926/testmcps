@@ -4,7 +4,7 @@ VERDICT: COMPLETED
 
 ## SUMMARY
 
-Correction appliquée uniquement dans `mcp-memory-accelerator/src/server.js` pour éviter toute écriture de logs applicatifs sur stdout en transport MCP stdio. L'écriture JSON de log utilise désormais stderr via `console.error(...)`.
+Les champs `pending` restants dans `.codex/PROOF.md` ont été remplacés par les valeurs réelles du correctif MCP stdio logging déjà commité et poussé. Aucun fichier de code n'a été modifié.
 
 ## FILES_READ
 
@@ -14,13 +14,12 @@ Correction appliquée uniquement dans `mcp-memory-accelerator/src/server.js` pou
 - .codex/RESULT.md
 - .codex/PROOF.md
 - .codex/HANDOFF.md
-- mcp-memory-accelerator/src/server.js
 - état Git via `git status --short`
 - branche courante via `git branch --show-current`
+- historique récent via `git log --oneline -3`
 
 ## FILES_CHANGED
 
-- mcp-memory-accelerator/src/server.js
 - .codex/STATUS.md
 - .codex/RESULT.md
 - .codex/PROOF.md
@@ -28,26 +27,21 @@ Correction appliquée uniquement dans `mcp-memory-accelerator/src/server.js` pou
 
 ## DECISIONS_MADE
 
-- Changement limité à `console.log(...)` vers `console.error(...)` dans la fonction `log(level, payload)`.
-- Aucun autre fichier de code n'a été modifié.
-- La forme du JSON de log a été conservée à l'identique.
-- Aucun refactor ni dépendance supplémentaire.
+- Mise à jour limitée aux fichiers `.codex` de trace.
+- Référence explicite du commit corrigé `ce188381920464947988d2af243a4f2b8787c8c3`.
+- Confirmation du push vers `review/mcp-memory-robustness-20260428`.
+- Aucun fichier de code modifié ni restagé.
 
-## PROBLEM_FIXED
+## TRACE_COMPLETED
 
-- Avant: les logs applicatifs JSON étaient écrits sur stdout.
-- Risque: en transport MCP stdio, stdout doit rester réservé au protocole.
-- Après: les logs applicatifs JSON sont écrits sur stderr, ce qui évite de polluer le flux protocolaire stdout.
-
-## COMMIT
-
-- Branche: `review/mcp-memory-robustness-20260428`
-- Message: `Fix MCP stdio logging output`
+- Branche confirmée: `review/mcp-memory-robustness-20260428`
+- Commit corrigé référencé: `ce188381920464947988d2af243a4f2b8787c8c3`
+- Les champs de capture différée du commit précédent ont été remplacés par les valeurs réelles disponibles.
 
 ## RISKS
 
-- Aucun risque de portée identifié au-delà du changement ciblé.
+- Aucun risque de portée identifié: opération documentaire uniquement.
 
 ## NEXT_ACTION
 
-Validation externe du commit et du push si nécessaire.
+Validation externe finale des fichiers `.codex` si nécessaire.

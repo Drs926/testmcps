@@ -1,7 +1,7 @@
 # Handoff
 
-WHERE_WE_ARE: Authorized CODE_ACTION executed on branch `review/mcp-memory-robustness-20260428`.
-WHAT_CHANGED: `mcp-memory-accelerator/src/server.js` now writes application logs to stderr instead of stdout; `.codex/*` trace files updated accordingly.
-WHAT_REMAINS: Stage the allowed files, capture the required git proofs, commit with the prescribed message, and push the current branch.
+WHERE_WE_ARE: DOC_ONLY proof-trace correction completed on branch `review/mcp-memory-robustness-20260428`.
+WHAT_CHANGED: `.codex/PROOF.md` no longer contains `pending` placeholders for the MCP stdio logging fix; `.codex/STATUS.md`, `.codex/RESULT.md` and `.codex/HANDOFF.md` were aligned with that completed trace.
+WHAT_REMAINS: Stage only the `.codex` files, capture the staged-file proof for this documentation update, commit, and push.
 KNOWN_BLOCKERS: none
-SAFE_NEXT_STEP: Complete the git proof sequence (`diff`, `add`, `cached diff`, `commit`, `push`) without touching any other code file.
+SAFE_NEXT_STEP: Commit only `.codex/STATUS.md`, `.codex/RESULT.md`, `.codex/PROOF.md` and `.codex/HANDOFF.md` with the prescribed message, then push the current branch.
