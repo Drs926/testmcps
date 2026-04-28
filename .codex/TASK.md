@@ -1,6 +1,6 @@
 # Task
 
-TASK_ID: TMCPS-20260428-006
+TASK_ID: TMCPS-20260428-007
 MODE: DOC_ONLY
 TARGET_REPO: Drs926/testmcps
 TARGET_BRANCH: review/mcp-memory-robustness-20260428
@@ -10,28 +10,27 @@ OWNER: codex
 
 ## OBJECTIVE
 
-Corriger uniquement les champs `pending` restants dans `.codex/PROOF.md` après le commit `ce188381920464947988d2af243a4f2b8787c8c3`.
+Corriger uniquement l'incohérence restante dans `.codex/PROOF.md` : le commit documentaire `36d09f0b028fc6e96b1dc62aacc9af0605927425` ne doit pas lister `mcp-memory-accelerator/src/server.js` dans `GIT_DIFF_CACHED_NAME_ONLY` ni dans `GIT_DIFF_CACHED_STAT`.
 
 ## CONTEXT
 
-L'audit du correctif MCP stdio logging a validé le changement code, mais a relevé un défaut de traçabilité : `.codex/PROOF.md` garde encore des champs `pending` alors que le commit et le push ont été réalisés.
+L'audit de `TMCPS-20260428-006` a confirmé que le commit documentaire ne modifie que les fichiers `.codex`, mais `.codex/PROOF.md` mélange encore la preuve du commit code `ce188381920464947988d2af243a4f2b8787c8c3` avec la preuve du commit documentaire `36d09f0b028fc6e96b1dc62aacc9af0605927425`.
 
 ## SCOPE
 
 - Travailler uniquement sur la branche `review/mcp-memory-robustness-20260428`.
-- Modifier uniquement `.codex/PROOF.md`, `.codex/STATUS.md`, `.codex/RESULT.md` et `.codex/HANDOFF.md`.
-- Remplacer les champs `pending` de `.codex/PROOF.md` par les valeurs réelles disponibles.
-- Mentionner le commit `ce188381920464947988d2af243a4f2b8787c8c3`.
-- Confirmer le push vers `review/mcp-memory-robustness-20260428`.
-- Committer uniquement les fichiers `.codex` de trace.
+- Modifier uniquement `.codex/PROOF.md`, `.codex/STATUS.md`, `.codex/RESULT.md` et `.codex/HANDOFF.md` si nécessaire.
+- Dans `.codex/PROOF.md`, supprimer `mcp-memory-accelerator/src/server.js` de `GIT_DIFF_CACHED_NAME_ONLY` pour la tâche documentaire.
+- Dans `.codex/PROOF.md`, supprimer `mcp-memory-accelerator/src/server.js | 2 +-` de `GIT_DIFF_CACHED_STAT` pour la tâche documentaire.
+- Indiquer clairement que le commit code référencé reste `ce188381920464947988d2af243a4f2b8787c8c3`, mais que le commit documentaire ne contient que `.codex/*`.
+- Committer uniquement les fichiers `.codex`.
 
 ## OUT_OF_SCOPE
 
 - Ne pas modifier de fichier de code.
 - Ne pas modifier `mcp-memory-accelerator/src/server.js`.
 - Ne pas modifier `reindex.js` ni `search.js`.
-- Ne pas lancer de refactor.
-- Ne pas ajouter de dépendance.
+- Ne pas modifier `.codex/TASK.md`.
 - Ne pas merger dans `main`.
 - Ne pas ouvrir de PR.
 - Ne pas modifier le repo central `Drs926/agent-control-tower`.
@@ -54,13 +53,12 @@ L'audit du correctif MCP stdio logging a validé le changement code, mais a rele
 
 - git status --short
 - git branch --show-current
-- git log --oneline -3
-- git diff --stat
+- git log --oneline -5
 - git diff -- .codex/PROOF.md
 - git add .codex/STATUS.md .codex/RESULT.md .codex/PROOF.md .codex/HANDOFF.md
 - git diff --cached --name-only
 - git diff --cached --stat
-- git commit -m "Complete proof trace for MCP stdio logging fix"
+- git commit -m "Fix proof trace staged file list"
 - git push
 
 ## EXPECTED_RESULT_FILE
@@ -74,8 +72,7 @@ L'audit du correctif MCP stdio logging a validé le changement code, mais a rele
 ## PROOFS_REQUIRED
 
 - branche courante confirmée : `review/mcp-memory-robustness-20260428`.
-- commit corrigé référencé : `ce188381920464947988d2af243a4f2b8787c8c3`.
-- `git diff --cached --name-only` avant commit.
+- `git diff --cached --name-only` avant commit ne contient que des fichiers `.codex`.
 - nouveau commit SHA produit.
 - push réussi.
 - confirmation qu'aucun fichier de code n'a été modifié.
