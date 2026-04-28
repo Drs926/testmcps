@@ -1,7 +1,7 @@
 # Handoff
 
-WHERE_WE_ARE: Hybrid rail initialized, no active task.
-WHAT_CHANGED: AGENTS.md and `.codex/*` rail files added.
-WHAT_REMAINS: Define a first real task before any execution.
-KNOWN_BLOCKERS: none
-SAFE_NEXT_STEP: Create a PROOF_ONLY task for repository structure audit.
+WHERE_WE_ARE: PROOF_ONLY structure audit completed and status moved to READY_FOR_REVIEW.
+WHAT_CHANGED: `.codex/STATUS.md`, `.codex/RESULT.md`, `.codex/PROOF.md` and `.codex/HANDOFF.md` updated with audit outcome and evidence only.
+WHAT_REMAINS: External audit should validate the structured result and decide whether to mark the task DONE or open a follow-up task.
+KNOWN_BLOCKERS: Local repo already contains 3 modified code files outside task scope; they were left untouched.
+SAFE_NEXT_STEP: Review `.codex/RESULT.md` and `.codex/PROOF.md`, then close the task or issue a new scoped instruction.
