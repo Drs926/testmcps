@@ -10,7 +10,7 @@ const LOG_LEVEL = process.env.LOG_LEVEL || "info";
 
 function log(level, payload) {
   if (level === "debug" && LOG_LEVEL !== "debug") return;
-  console.log(JSON.stringify({
+  console.error(JSON.stringify({
     ts: new Date().toISOString(),
     level,
     ...payload

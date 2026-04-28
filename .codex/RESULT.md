@@ -4,23 +4,23 @@ VERDICT: COMPLETED
 
 ## SUMMARY
 
-Les 3 modifications locales peuvent être conservées en l'état pour une proposition de commit ultérieure, sous réserve d'une validation fonctionnelle dédiée dans une tâche séparée. Aucune ne présente ici de signal évident imposant une restauration immédiate.
+Correction appliquée uniquement dans `mcp-memory-accelerator/src/server.js` pour éviter toute écriture de logs applicatifs sur stdout en transport MCP stdio. L'écriture JSON de log utilise désormais stderr via `console.error(...)`.
 
 ## FILES_READ
 
 - AGENTS.md
 - .codex/TASK.md
-- mcp-memory-accelerator/package.json
-- mcp-memory-accelerator/README.md
-- diff de `mcp-memory-accelerator/src/server.js`
-- diff de `mcp-memory-accelerator/src/tools/reindex.js`
-- diff de `mcp-memory-accelerator/src/tools/search.js`
+- .codex/STATUS.md
+- .codex/RESULT.md
+- .codex/PROOF.md
+- .codex/HANDOFF.md
+- mcp-memory-accelerator/src/server.js
 - état Git via `git status --short`
-- synthèse via `git diff --stat`
-- historique récent via `git log --oneline -5`
+- branche courante via `git branch --show-current`
 
 ## FILES_CHANGED
 
+- mcp-memory-accelerator/src/server.js
 - .codex/STATUS.md
 - .codex/RESULT.md
 - .codex/PROOF.md
@@ -28,38 +28,26 @@ Les 3 modifications locales peuvent être conservées en l'état pour une propos
 
 ## DECISIONS_MADE
 
-- Aucun fichier de code n'a été modifié, restauré ou commit.
-- Aucun test ni lint n'a été exécuté car `mcp-memory-accelerator/package.json` ne contient ni script `test` ni script `lint`.
-- La recommandation est limitée à une évaluation de risque et d'opportunité, sans appliquer la décision.
+- Changement limité à `console.log(...)` vers `console.error(...)` dans la fonction `log(level, payload)`.
+- Aucun autre fichier de code n'a été modifié.
+- La forme du JSON de log a été conservée à l'identique.
+- Aucun refactor ni dépendance supplémentaire.
 
-## FINDINGS
+## PROBLEM_FIXED
 
-- `src/server.js` ajoute un logging structuré JSON, ciblé sur les succès et erreurs des outils MCP. Le changement est localisé et cohérent avec un besoin d'observabilité.
-- `src/tools/reindex.js` empêche une réindexation concurrente par un verrou mémoire simple. L'intention est défensive et réduit un risque opérationnel plausible.
-- `src/tools/search.js` ajoute une validation explicite de la requête et borne `limit` à 20. Cela réduit le risque d'entrée invalide et encadre mieux la charge.
-- Le `README.md` décrit un serveur MCP orienté lecture seule, indexation manuelle et cache local. Les changements observés sont compatibles avec ce positionnement.
-- `package.json` n'offre qu'un script `dev`, ce qui empêche de vérifier automatiquement la non-régression avec les seules commandes autorisées.
+- Avant: les logs applicatifs JSON étaient écrits sur stdout.
+- Risque: en transport MCP stdio, stdout doit rester réservé au protocole.
+- Après: les logs applicatifs JSON sont écrits sur stderr, ce qui évite de polluer le flux protocolaire stdout.
 
-## RECOMMENDATION
+## COMMIT
 
-- Recommandation principale: conserver.
-- Décision de suite recommandée: proposer un commit plus tard, pas maintenant.
-- Ajustement immédiat: non requis d'après les diffs seuls.
-- Restauration: non recommandée sur la base des éléments disponibles.
-
-## RATIONALE
-
-- Les trois changements sont petits, ciblés, cohérents entre eux et améliorent la robustesse d'exécution.
-- Aucun diff ne montre de refactor large, de changement de contrat manifeste ou d'introduction de dépendance.
-- L'absence de tests automatisés disponibles empêche de recommander un commit immédiat avec forte confiance.
-- La meilleure décision prudente est donc de conserver ces changements localement et d'ouvrir une tâche dédiée de validation avant proposition de commit.
+- Branche: `review/mcp-memory-robustness-20260428`
+- Message: `Fix MCP stdio logging output`
 
 ## RISKS
 
-- Le logging ajoute des sorties `console.log` JSON sur chaque appel réussi ou en erreur; cela peut être souhaité ou trop verbeux selon l'environnement d'exécution.
-- Le verrou `reindexInProgress` est en mémoire de process uniquement; c'est probablement suffisant ici, mais non vérifié par test.
-- La nouvelle validation de recherche modifie le comportement utilisateur pour les requêtes très courtes et pour les `limit` élevés.
+- Aucun risque de portée identifié au-delà du changement ciblé.
 
 ## NEXT_ACTION
 
-Créer une tâche séparée pour validation ciblée avant décision de commit, par exemple en ajoutant ou exécutant des vérifications non destructrices explicitement autorisées.
+Validation externe du commit et du push si nécessaire.
