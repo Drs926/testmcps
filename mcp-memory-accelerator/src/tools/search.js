@@ -8,7 +8,14 @@ const inputSchema = z.object({
 });
 
 export function searchMemory(input) {
-  const { query, limit } = inputSchema.parse(input ?? {});
+  input = input ?? {};
+  const MAX_LIMIT = 20;
+  if (!input.query || input.query.trim().length < 2) {
+    throw new Error("Query must contain at least 2 characters");
+  }
+  const limit = Math.min(input.limit ?? 5, MAX_LIMIT);
+
+  const { query } = inputSchema.parse({ ...input, limit });
   const repoRoot = findRepoRoot();
   const { dbPath } = getPaths(repoRoot);
   if (!fs.existsSync(dbPath)) {
@@ -32,7 +39,7 @@ export function searchMemory(input) {
       ORDER BY score
       LIMIT ?`
     )
-    .all(query, limit ?? 10);
+    .all(query, limit);
 
   return { ok: true, results: rows };
 }
